@@ -115,3 +115,18 @@ def data_prediction(class_probability, mean_variance, data):
     accuracy = (accuracy / len(data)) * 100
     return accuracy
 
+if __name__ == '__main__':
+    train_data = get_train_data()
+    class_labels = get_class_labels(train_data)
+    # class_probability = get_class_probability(train_data, class_labels)
+    class_probability = {}
+    for x in class_labels:
+        class_probability[x] = 1 / len(class_labels)  # as the priors are equal
+
+    mean_variance = get_mean_and_variance(train_data, class_labels)
+    test_data = get_test_data()
+    test_accuracy = data_prediction(class_probability, mean_variance, test_data)
+    train_accuracy = data_prediction(class_probability, mean_variance, train_data)
+
+    print('accuracy on test set: ', test_accuracy)
+    print('accuracy on training set: ', train_accuracy)
