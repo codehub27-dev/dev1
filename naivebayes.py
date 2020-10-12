@@ -101,4 +101,17 @@ def predict(posterier, class_probability):
         final_probab[x] = (posterier[x] * class_probability[x]) / denominator
     return final_probab
 
+def data_prediction(class_probability, mean_variance, data):
+    accuracy = 0
+    feature_count = len(data[0]) - 1
+    for i in range(len(data)):
+        class_conditional_probability = get_class_conditional(data[i][:feature_count], mean_variance)
+        posterior = get_posterier(class_conditional_probability)
+        final_probability = predict(posterior, class_probability)
+        out_class = max(final_probability, key=lambda x: final_probability[x])
+        print(data[i][0], data[i][1], data[i][2], data[i][3], 'predicted: ', out_class, ' actual: ', data[i][4])
+        if out_class == data[i][4]:
+            accuracy += 1
+    accuracy = (accuracy / len(data)) * 100
+    return accuracy
 
